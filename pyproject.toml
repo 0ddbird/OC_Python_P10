@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "oc-python-p10"
+version = "0.1.0"
+description = ""
+authors = ["0ddbird <0ddbird@proton.me>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.0.1"
+djangorestframework = "^3.14.0"
+black = "^23.12.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
