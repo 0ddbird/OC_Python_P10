@@ -1,9 +1,4 @@
 from django.db import models
-from users.models import User
-
-
-class Contributor(User):
-    pass
 
 
 class Project(models.Model):
@@ -11,7 +6,10 @@ class Project(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    created_by = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    contributors = models.ManyToManyField(
+        "users.User", through="users.ProjectContributor", related_name="projects"
+    )
 
     def __str__(self):
         return self.name
@@ -45,9 +43,15 @@ class Issue(models.Model):
     )
     tag = models.CharField(max_length=15, choices=TAG_CHOICES, default="task")
     assigned_to = models.ForeignKey(
-        Contributor, on_delete=models.SET_NULL, null=True, blank=True
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_issues",
     )
-    created_by = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="created_issues"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -58,10 +62,8 @@ class Issue(models.Model):
 class Comment(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     text = models.TextField()
-    created_by = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+    created_by = models.ForeignKey("users.User", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Comment by {self.created_by} on {self.created_at}"
-
-

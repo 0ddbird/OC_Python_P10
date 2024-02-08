@@ -1,10 +1,10 @@
-.PHONY: run tw
+.PHONY: rb rf sp
 
-run:
+rb:
 		python manage.py runserver
 
-tw:
-		python manage.py tailwind start
+rf:
+		cd front; yarn start
 
 sp:
 		python manage.py shell_plus
