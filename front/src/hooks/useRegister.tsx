@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { API_ENDPOINTS } from '../urls'
+import { useAuth } from '../contexts/AuthContext'
 
 interface IRegisterParams {
   username: string
@@ -45,10 +46,10 @@ const useRegister = (): IRegisterHookReturn => {
         }),
       })
 
-      if (!response.ok) {
-        throw new Error('Signup failed')
-      }
+      if (!response.ok) throw new Error('Signup failed')
       setIsSuccess(true)
+      const { login } = useAuth()
+      login()
     } catch (error) {
       setError(error instanceof Error ? error.message : String(error))
     } finally {

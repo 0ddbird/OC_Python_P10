@@ -7,21 +7,24 @@ import CanBeContactedCheckbox from '../components/inputs/CanBeContactedCheckbox'
 import CanDataBeSharedCheckbox from '../components/inputs/CanDataBeSharedCheckbox'
 import EmailInput from '../components/inputs/EmailInput'
 import { useNavigate } from 'react-router-dom'
+import { useMessage } from '../contexts/MessageContext'
 
 const RegisterForm = (): React.ReactElement => {
   const { register, isLoading, error, isSuccess } = useRegister()
+  const { setMessage } = useMessage()
   const navigate = useNavigate()
-  console.log(error)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [birthdate, setBirthdate] = useState('')
 
   useEffect(() => {
-    if (isSuccess) {
-      navigate('/projects')
-    }
+    if (isSuccess) navigate('/projects')
   }, [isSuccess, navigate])
+
+  useEffect(() => {
+    setMessage(error)
+  }, [error, setMessage])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -74,7 +77,7 @@ const RegisterForm = (): React.ReactElement => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               {isLoading ? 'Registering...' : 'Register'}
             </button>

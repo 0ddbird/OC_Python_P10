@@ -10,7 +10,7 @@ const canBeContactedCheckbox = (): React.ReactElement => {
           type="checkbox"
           className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
         />
-        <span>Can be contacted?</span>
+        <span>I accept to be contacted</span>
       </label>
     </div>
   )

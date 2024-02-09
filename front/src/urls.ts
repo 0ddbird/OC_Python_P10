@@ -6,6 +6,8 @@ export const API_ENDPOINTS = {
   PROJECTS: `${BASE_URL}/projects/`,
   PROJECT_DETAIL: (projectId: number | string) =>
     `${BASE_URL}/projects/${projectId}/`,
+  PROJECT_ISSUES: (projectId: number | string) =>
+    `${BASE_URL}/projects/${projectId}/issues/`,
   ISSUE_CREATE: (projectId: number | string) =>
     `${BASE_URL}/projects/${projectId}/issues/create/`,
   ISSUE_DETAIL: (projectId: number | string, issueId: number | string) =>

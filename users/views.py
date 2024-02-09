@@ -17,12 +17,20 @@ def set_token_response(user=None, access_token=None):
     if user:
         refresh = RefreshToken.for_user(user)
         response.set_cookie(
-            "refresh_token", str(refresh), httponly=True, secure=False, samesite="Lax"
+            "refresh_token",
+            str(refresh),
+            httponly=True,
+            secure=False,
+            samesite="Lax",
         )
         access_token = str(refresh.access_token)
     if access_token:
         response.set_cookie(
-            "access_token", access_token, httponly=True, secure=False, samesite="Lax"
+            "access_token",
+            access_token,
+            httponly=True,
+            secure=False,
+            samesite="Lax",
         )
     return response
 

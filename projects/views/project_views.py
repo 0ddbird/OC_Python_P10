@@ -4,8 +4,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from projects.models import Project
 from projects.permissions import IsAuthenticatedAndProjectContributor
+from rest_framework.pagination import PageNumberPagination
 from projects.serializers import ProjectContributorSerializer, ProjectSerializer
 from users.models import ProjectContributor
+
+
+class ProjectListPagination(PageNumberPagination):
+    page_size = 10
 
 
 class AddContributorView(APIView):
@@ -32,9 +37,13 @@ class AddContributorView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProjectCreateView(generics.CreateAPIView):
+class ProjectListCreateView(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = ProjectListPagination
+
+    def get_queryset(self):
+        return Project.objects.all().order_by("created_at")
 
     def perform_create(self, serializer):
         user = self.request.user

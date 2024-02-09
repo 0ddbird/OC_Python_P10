@@ -3,19 +3,27 @@ import UsernameInput from '../components/inputs/UsernameInput'
 import PasswordInput from '../components/inputs/PasswordInput'
 import { useNavigate } from 'react-router-dom'
 import useLogin from '../hooks/useLogin'
+import { useMessage } from '../contexts/MessageContext'
+import { useAuth } from '../contexts/AuthContext'
 
 const LoginForm = (): React.ReactElement => {
   const { login, isLoading, error, isSuccess } = useLogin()
-  console.log(error)
+  const auth = useAuth()
+  const { setMessage } = useMessage()
   const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   useEffect(() => {
     if (isSuccess) {
+      auth.login()
       navigate('/projects')
     }
   }, [isSuccess, navigate])
+
+  useEffect(() => {
+    setMessage(error)
+  }, [error, setMessage])
 
   const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault()
@@ -50,7 +58,7 @@ const LoginForm = (): React.ReactElement => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               {isLoading ? 'Logging in...' : 'Login'}
             </button>

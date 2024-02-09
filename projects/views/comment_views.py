@@ -6,6 +6,11 @@ from projects.permissions import (
     IsCommentCreatorOrReadOnly,
 )
 from projects.serializers import CommentSerializer
+from rest_framework.pagination import PageNumberPagination
+
+
+class CommentListPagination(PageNumberPagination):
+    page_size = 50
 
 
 class CommentListCreateView(generics.ListCreateAPIView):
@@ -14,6 +19,7 @@ class CommentListCreateView(generics.ListCreateAPIView):
         permissions.IsAuthenticated,
         IsAuthenticatedAndProjectContributor,
     ]
+    pagination_class = CommentListPagination
 
     def get_queryset(self):
         issue_id = self.kwargs["issue_id"]

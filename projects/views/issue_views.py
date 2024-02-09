@@ -4,11 +4,17 @@ from projects.models import Issue, Project
 from projects.permissions import IsIssueCreatorOrReadOnly
 from projects.serializers import IssueSerializer
 from users.models import ProjectContributor
+from rest_framework.pagination import PageNumberPagination
+
+
+class IssueListPagination(PageNumberPagination):
+    page_size = 30
 
 
 class IssueListCreateView(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = IssueListPagination
 
     def get_queryset(self):
         project_id = self.kwargs["project_id"]

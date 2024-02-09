@@ -25,10 +25,9 @@ const useLogin = (): ILoginHookReturn => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
+        credentials: 'include',
       })
-      if (!response.ok) {
-        throw new Error('Login failed')
-      }
+      if (!response.ok) throw new Error('Login failed')
       setIsSuccess(true)
     } catch (error) {
       setError(error instanceof Error ? error.message : String(error))
