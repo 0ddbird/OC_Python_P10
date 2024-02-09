@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
-import useRegister from '../../hooks/useRegister'
-import UsernameInput from './UsernameInput'
-import PasswordInput from './PasswordInput'
-import BirthdateInput from './BirthDateInput'
-import CanBeContactedCheckbox from './CanBeContactedCheckbox'
-import CanDataBeSharedCheckbox from './CanDataBeSharedCheckbox'
-import EmailInput from './EmailInput'
+import React, { useEffect, useState } from 'react'
+import useRegister from '../hooks/useRegister'
+import UsernameInput from '../components/inputs/UsernameInput'
+import PasswordInput from '../components/inputs/PasswordInput'
+import BirthdateInput from '../components/inputs/BirthDateInput'
+import CanBeContactedCheckbox from '../components/inputs/CanBeContactedCheckbox'
+import CanDataBeSharedCheckbox from '../components/inputs/CanDataBeSharedCheckbox'
+import EmailInput from '../components/inputs/EmailInput'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterForm = (): React.ReactElement => {
-  const { register, isLoading, error } = useRegister()
+  const { register, isLoading, error, isSuccess } = useRegister()
+  const navigate = useNavigate()
   console.log(error)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [birthdate, setBirthdate] = useState('')
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/projects')
+    }
+  }, [isSuccess, navigate])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()

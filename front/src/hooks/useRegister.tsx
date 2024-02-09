@@ -14,9 +14,11 @@ interface IRegisterHookReturn {
   isLoading: boolean
   error: string
   register: (params: IRegisterParams) => Promise<void>
+  isSuccess: boolean
 }
 
 const useRegister = (): IRegisterHookReturn => {
+  const [isSuccess, setIsSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -46,8 +48,7 @@ const useRegister = (): IRegisterHookReturn => {
       if (!response.ok) {
         throw new Error('Signup failed')
       }
-      const data = await response.json()
-      console.log(data)
+      setIsSuccess(true)
     } catch (error) {
       setError(error instanceof Error ? error.message : String(error))
     } finally {
@@ -55,7 +56,7 @@ const useRegister = (): IRegisterHookReturn => {
     }
   }
 
-  return { register, isLoading, error }
+  return { register, isLoading, error, isSuccess }
 }
 
 export default useRegister

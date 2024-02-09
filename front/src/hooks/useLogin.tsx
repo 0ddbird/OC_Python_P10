@@ -1,19 +1,27 @@
 import { useState } from 'react'
+import { API_ENDPOINTS } from '../urls'
+
+interface ILoginParams {
+  username: string
+  password: string
+}
 
 interface ILoginHookReturn {
   isLoading: boolean
   error: string
-  login: (username: string, password: string) => Promise<void>
+  login: (params: ILoginParams) => Promise<void>
+  isSuccess: boolean
 }
 
 const useLogin = (): ILoginHookReturn => {
   const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState('')
 
-  const login = async (username: string, password: string): Promise<void> => {
+  const login = async ({ username, password }: ILoginParams): Promise<void> => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -21,8 +29,7 @@ const useLogin = (): ILoginHookReturn => {
       if (!response.ok) {
         throw new Error('Login failed')
       }
-      const data = await response.json()
-      console.log(data)
+      setIsSuccess(true)
     } catch (error) {
       setError(error instanceof Error ? error.message : String(error))
     } finally {
@@ -30,5 +37,7 @@ const useLogin = (): ILoginHookReturn => {
     }
   }
 
-  return { login, isLoading, error }
+  return { login, isLoading, error, isSuccess }
 }
+
+export default useLogin

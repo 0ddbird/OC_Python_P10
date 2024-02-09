@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:8000/api'
 
 export const API_ENDPOINTS = {
-  LOGIN: `${BASE_URL}/login/`,
+  LOGIN: `${BASE_URL}/users/token/`,
   REGISTER: `${BASE_URL}/users/create/`,
   PROJECTS: `${BASE_URL}/projects/`,
   PROJECT_DETAIL: (projectId: number | string) =>
