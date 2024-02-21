@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsAuthenticatedAndProjectContributor(permissions.BasePermission):
+class IsProjectContributor(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.contributors.filter(id=request.user.id).exists()
 

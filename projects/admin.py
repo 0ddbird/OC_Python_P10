@@ -5,7 +5,14 @@ from .models import Comment, Issue, Project
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "description", "created_at", "updated_at", "created_by")
+    list_display = (
+        "id",
+        "name",
+        "description",
+        "created_at",
+        "updated_at",
+        "created_by",
+    )
     search_fields = ("name", "description")
 
 

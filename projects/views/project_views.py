@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from projects.models import Project
-from projects.permissions import IsAuthenticatedAndProjectContributor
+from projects.permissions import IsProjectContributor
 from rest_framework.pagination import PageNumberPagination
 from projects.serializers import ProjectContributorSerializer, ProjectSerializer
 from users.models import ProjectContributor
@@ -54,12 +54,24 @@ class ProjectListCreateView(generics.ListCreateAPIView):
 class ProjectDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [
-        permissions.IsAuthenticated,
-        IsAuthenticatedAndProjectContributor,
-    ]
+    permission_classes = [IsProjectContributor]
 
     def get_queryset(self):
         user = self.request.user
-        return Project.objects.filter(contributors=user)
+        projects = Project.objects.filter(contributors=user)
+        print(projects)
+        return projects
+
+
+class ContributorProjectsListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [IsProjectContributor]
+    pagination_class = ProjectListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            Project.objects.filter(projectcontributor__contributor=user.id)
+            .distinct()
+            .order_by("created_at")
+        )

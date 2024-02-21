@@ -2,12 +2,13 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from rest_framework import permissions, status
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
+from rest_framework import generics
 from users.serializers import UserSerializer
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.views import APIView
 
 User = get_user_model()
 
@@ -21,7 +22,7 @@ def set_token_response(user=None, access_token=None):
             str(refresh),
             httponly=True,
             secure=False,
-            samesite="Lax",
+            samesite="None",
         )
         access_token = str(refresh.access_token)
     if access_token:
@@ -30,9 +31,13 @@ def set_token_response(user=None, access_token=None):
             access_token,
             httponly=True,
             secure=False,
-            samesite="Lax",
+            samesite="None",
         )
     return response
+
+
+class UserListPagination(PageNumberPagination):
+    page_size = 10
 
 
 class CreateUserView(APIView):
@@ -44,6 +49,15 @@ class CreateUserView(APIView):
             user = serializer.save()
             return set_token_response(user)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
+    pagination_class = UserListPagination
+
+    def get_queryset(self):
+        return User.objects.all().order_by("date_joined")
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):

@@ -30,12 +30,12 @@ urlpatterns = [
         name="issue-create",
     ),
     path(
-        "<int:project_id>/issues/<int:issue_id>/",
+        "<int:project_id>/issues/<int:pk>/",
         IssueDetailUpdateDeleteView.as_view(),
         name="issue-detail-update-delete",
     ),
     path(
-        "<int:project_id>/issues/<int:issue_id>/comments/",
+        "<int:project_id>/issues/<int:pk>/comments/",
         CommentListCreateView.as_view(),
         name="comment-list-create",
     ),
