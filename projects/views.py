@@ -1,9 +1,11 @@
-from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
 
 from projects.models import Project
 from projects.permissions import IsProjectContributor, IsProjectCreatorOrReadOnly
@@ -45,18 +47,40 @@ class AddContributorView(APIView):
 
 
 @extend_schema(tags=["projects"])
+class ContributorProjectsListView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    permission_classes = [IsProjectContributor]
+    pagination_class = ProjectListPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        return (
+            Project.objects.filter(projectcontributor__contributor=user.id)
+            .distinct()
+            .order_by("created_time")
+        )
+
+
+@extend_schema(tags=["projects"])
 class ProjectListCreateView(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = ProjectListPagination
 
     def get_queryset(self):
-        return Project.objects.all().order_by("created_at")
+        cache_key = "project_list"
+        cached_projects = cache.get(cache_key)
+        if cached_projects is not None:
+            return cached_projects
+        projects = Project.objects.all().order_by("created_time")
+        cache.set(cache_key, projects, 3600)
+        return projects
 
     def perform_create(self, serializer):
         user = self.request.user
         project = serializer.save(created_by=user)
         ProjectContributor.objects.create(project=project, contributor=user)
+        cache.delete("project_list")
 
 
 @extend_schema(tags=["projects"])
@@ -74,17 +98,10 @@ class ProjectDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         self.check_object_permissions(self.request, obj)
         return obj
 
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        cache.delete("project_list")
 
-@extend_schema(tags=["projects"])
-class ContributorProjectsListView(generics.ListAPIView):
-    serializer_class = ProjectSerializer
-    permission_classes = [IsProjectContributor]
-    pagination_class = ProjectListPagination
-
-    def get_queryset(self):
-        user = self.request.user
-        return (
-            Project.objects.filter(projectcontributor__contributor=user.id)
-            .distinct()
-            .order_by("created_at")
-        )
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+        cache.delete("project_list")

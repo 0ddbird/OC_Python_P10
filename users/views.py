@@ -1,5 +1,3 @@
-from django.contrib.auth import get_user_model
-from django.http import HttpResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
 from rest_framework.pagination import PageNumberPagination
@@ -8,6 +6,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 
 from users.serializers import UserSerializer
 
@@ -47,6 +48,7 @@ class CreateUserView(APIView):
 
     @extend_schema(request=UserSerializer, responses={201: UserSerializer})
     def post(self, request, *args, **kwargs):
+        print("POST called")
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()

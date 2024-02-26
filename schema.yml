@@ -193,7 +193,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -212,7 +212,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       requestBody:
         content:
           application/json:
@@ -254,7 +254,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -283,7 +283,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       requestBody:
         content:
           application/json:
@@ -324,7 +324,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       requestBody:
         content:
           application/json:
@@ -364,7 +364,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -385,7 +385,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -409,7 +409,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       requestBody:
         content:
           application/json:
@@ -445,7 +445,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       requestBody:
         content:
           application/json:
@@ -480,7 +480,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -507,7 +507,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -531,7 +531,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - comments
       requestBody:
         content:
           application/json:
@@ -569,7 +569,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -588,7 +588,7 @@ paths:
           type: integer
         required: true
       tags:
-      - projects
+      - issues
       requestBody:
         content:
           application/json:
@@ -806,6 +806,10 @@ paths:
   /api/users/delete/:
     delete:
       operationId: users_delete_destroy
+      description: |-
+        _summary_
+
+        Test content
       tags:
       - users
       security:
@@ -824,7 +828,7 @@ paths:
         schema:
           type: integer
       tags:
-      - users
+      - projects
       security:
       - JWTAuthSupportCookie: []
       responses:
@@ -841,7 +845,7 @@ paths:
         Takes a set of user credentials and returns an access and refresh JSON web
         token pair to prove the authentication of those credentials.
       tags:
-      - users
+      - authentication
       requestBody:
         content:
           application/json:
@@ -868,7 +872,7 @@ paths:
         Takes a refresh type JSON web token and returns an access type JSON web
         token if the refresh token is valid.
       tags:
-      - users
+      - authentication
       requestBody:
         content:
           application/json:

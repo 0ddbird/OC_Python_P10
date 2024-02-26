@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "users",
     "projects",
+    "issues",
+    "comments",
 ]
 
 MIDDLEWARE = [
@@ -203,4 +205,11 @@ SPECTACULAR_SETTINGS = {
     "EXTENSIONS": {
         "users.authentication.JWTAuthSupportCookie": "users.authentication.JWTAuthSupportCookieExtension"
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
 }

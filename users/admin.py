@@ -8,6 +8,7 @@ from users.models import User
 class CustomUserAdmin(UserAdmin):
     model = User
     list_display = (
+        "id",
         "username",
         "email",
         "can_be_contacted",

@@ -1,0 +1,25 @@
+[
+  {
+    "title": "Issue 1 title",
+    "description": "Issue 1 description",
+    "priority": "high",
+    "tag": "bug",
+    "assigned_to": null
+  },
+  {
+    "title": "Issue 2 title",
+    "description": "Issue 2 description",
+    "status": "progress",
+    "priority": "medium",
+    "tag": "task",
+    "assigned_to": 1
+  },
+  {
+    "title": "Issue 3 title",
+    "description": "Issue 3 description",
+    "status": "progress",
+    "priority": "medium",
+    "tag": "task",
+    "assigned_to": 3
+  }
+]

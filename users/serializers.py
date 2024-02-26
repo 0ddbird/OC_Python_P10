@@ -1,5 +1,8 @@
-from django.contrib.auth import get_user_model
+from datetime import date
+
 from rest_framework import serializers
+
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -16,6 +19,19 @@ class UserSerializer(serializers.ModelSerializer):
             "birthdate",
         )
         extra_kwargs = {"password": {"write_only": True}}
+
+    def validate_birthdate(self, value):
+        today = date.today()
+        age = (
+            today.year
+            - value.year
+            - ((today.month, today.day) < (value.month, value.day))
+        )
+        if age < 15:
+            raise serializers.ValidationError(
+                "You need to be at least 15 years old to register."
+            )
+        return value
 
     def create(self, validated_data):
         user = User.objects.create_user(
