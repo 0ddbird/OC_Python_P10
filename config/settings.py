@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
     "users",
     "projects",
 ]
@@ -142,6 +143,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": ("users.authentication.JWTAuthSupportCookie",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 CORS_ALLOW_CREDENTIALS = True
@@ -193,4 +195,12 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "AUTHENTICATION_WHITELIST": ["users.authentication.JWTAuthSupportCookie"],
+    "EXTENSIONS": {
+        "users.authentication.JWTAuthSupportCookie": "users.authentication.JWTAuthSupportCookieExtension"
+    },
 }

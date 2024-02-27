@@ -1,16 +1,18 @@
 from rest_framework import generics, permissions
+from rest_framework.pagination import PageNumberPagination
 
 from projects.models import Issue, Project
 from projects.permissions import IsIssueCreatorOrReadOnly
 from projects.serializers import IssueSerializer
 from users.models import ProjectContributor
-from rest_framework.pagination import PageNumberPagination
+from drf_spectacular.utils import extend_schema
 
 
 class IssueListPagination(PageNumberPagination):
     page_size = 30
 
 
+@extend_schema(tags=["issues"])
 class IssueListCreateView(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -32,6 +34,7 @@ class IssueListCreateView(generics.ListCreateAPIView):
         serializer.save(created_by=self.request.user, project=project)
 
 
+@extend_schema(tags=["issues"])
 class IssueDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer

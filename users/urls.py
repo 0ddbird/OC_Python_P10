@@ -1,6 +1,6 @@
 from django.urls import path
-from projects.views.project_views import ContributorProjectsListView
 
+from projects.views.project_views import ContributorProjectsListView
 from users.views import (
     CreateUserView,
     CustomTokenObtainPairView,

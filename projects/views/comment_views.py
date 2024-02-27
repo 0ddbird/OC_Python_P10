@@ -1,18 +1,16 @@
 from rest_framework import generics, permissions
-
-from projects.models import Comment, Issue
-from projects.permissions import (
-    IsProjectContributor,
-    IsCommentCreatorOrReadOnly,
-)
-from projects.serializers import CommentSerializer
 from rest_framework.pagination import PageNumberPagination
+from projects.models import Comment, Issue
+from projects.permissions import IsCommentCreatorOrReadOnly, IsProjectContributor
+from projects.serializers import CommentSerializer
+from drf_spectacular.utils import extend_schema
 
 
 class CommentListPagination(PageNumberPagination):
     page_size = 50
 
 
+@extend_schema(tags=["comments"])
 class CommentListCreateView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     permission_classes = [
@@ -35,6 +33,7 @@ class CommentListCreateView(generics.ListCreateAPIView):
         serializer.save(created_by=self.request.user, issue=issue)
 
 
+@extend_schema(tags=["comments"])
 class CommentDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer

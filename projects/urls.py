@@ -7,8 +7,8 @@ from projects.views.comment_views import (
 from projects.views.issue_views import IssueDetailUpdateDeleteView, IssueListCreateView
 from projects.views.project_views import (
     AddContributorView,
-    ProjectListCreateView,
     ProjectDetailUpdateDeleteView,
+    ProjectListCreateView,
 )
 
 urlpatterns = [

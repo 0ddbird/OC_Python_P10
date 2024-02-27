@@ -70,14 +70,6 @@
       "can_be_contacted": true,
       "can_data_be_shared": false,
       "birthdate": "1989-06-12"
-    },
-    {
-      "username": "DanielMartinez",
-      "email": "danielmartinez@example.com",
-      "password": "password987",
-      "can_be_contacted": false,
-      "can_data_be_shared": true,
-      "birthdate": "1980-03-05"
     }
   ]
   

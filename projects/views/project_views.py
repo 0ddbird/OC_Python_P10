@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from projects.models import Project
 from projects.permissions import IsProjectContributor, IsProjectCreatorOrReadOnly
-from rest_framework.pagination import PageNumberPagination
 from projects.serializers import ProjectContributorSerializer, ProjectSerializer
 from users.models import ProjectContributor
 
@@ -13,9 +15,14 @@ class ProjectListPagination(PageNumberPagination):
     page_size = 10
 
 
+@extend_schema(tags=["projects"])
 class AddContributorView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(
+        request=ProjectContributorSerializer,
+        responses={201: ProjectContributorSerializer},
+    )
     def post(self, request, project_id):
         user = request.user
         project = get_object_or_404(Project, pk=project_id)
@@ -37,6 +44,7 @@ class AddContributorView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=["projects"])
 class ProjectListCreateView(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -51,6 +59,7 @@ class ProjectListCreateView(generics.ListCreateAPIView):
         ProjectContributor.objects.create(project=project, contributor=user)
 
 
+@extend_schema(tags=["projects"])
 class ProjectDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -66,6 +75,7 @@ class ProjectDetailUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         return obj
 
 
+@extend_schema(tags=["projects"])
 class ContributorProjectsListView(generics.ListAPIView):
     serializer_class = ProjectSerializer
     permission_classes = [IsProjectContributor]

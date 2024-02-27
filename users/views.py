@@ -1,14 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
-from rest_framework import permissions, status
+from drf_spectacular.utils import extend_schema
+from rest_framework import generics, permissions, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework import generics
+
 from users.serializers import UserSerializer
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.views import APIView
 
 User = get_user_model()
 
@@ -40,9 +41,11 @@ class UserListPagination(PageNumberPagination):
     page_size = 10
 
 
+@extend_schema(tags=["users"])
 class CreateUserView(APIView):
     permission_classes = [permissions.AllowAny]
 
+    @extend_schema(request=UserSerializer, responses={201: UserSerializer})
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -51,6 +54,7 @@ class CreateUserView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=["users"])
 class UpdateUserView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -60,6 +64,7 @@ class UpdateUserView(generics.UpdateAPIView):
         return self.request.user
 
 
+@extend_schema(tags=["users"])
 class DeleteUserView(generics.DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -69,6 +74,7 @@ class DeleteUserView(generics.DestroyAPIView):
         return self.request.user
 
 
+@extend_schema(tags=["users"])
 class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
@@ -78,6 +84,7 @@ class UserListView(generics.ListAPIView):
         return User.objects.all().order_by("date_joined")
 
 
+@extend_schema(tags=["authentication"])
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -90,6 +97,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         return set_token_response(user)
 
 
+@extend_schema(tags=["authentication"])
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get("refresh_token")
