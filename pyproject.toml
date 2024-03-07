@@ -6,7 +6,8 @@ authors = ["0ddbird <0ddbird@proton.me>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+# python = "^3.10"
+python = '3.10.12'
 django = "^5.0.1"
 djangorestframework = "^3.14.0"
 djangorestframework-simplejwt = "^5.3.1"
