@@ -1,6 +1,10 @@
 # OC_Python_P10 | SoftDesk
 
-Welcome to the GitHub repository of the SoftDesk API. This RESTful API is designed to provide a high-performance and secure backend, serving front-end applications on various platforms. Developed with Django and Django REST Framework (DRF), it meets modern requirements for security, performance, and sustainable development.
+Welcome to the GitHub repository of the SoftDesk API.
+
+This RESTful API is designed to provide a high-performance and secure backend, serving front-end applications on various platforms. 
+
+Developed with Django and Django REST Framework (DRF), it meets modern requirements for security, performance, and sustainable development.
 
 ## Getting Started
 These instructions will help you get a copy of the project up and running on your local machine for development and testing purposes.
@@ -13,17 +17,35 @@ These instructions will help you get a copy of the project up and running on you
 ## Installation
 
 Clone this repository to your local machine.
-`git clone https://github.com/yourusername/softdesk-api.git`
-Navigate to the project folder.
-`cd softdesk-api`
+```bash
+git clone https://github.com/yourusername/softdesk-api.git
+```
+
+Navigate to the project folder:
+```bash 
+cd softdesk-api
+```
+
 Use Poetry to install the project dependencies.
-`poetry install`
+```
+poetry install
+```
+
 Activate the virtual environment.
-`poetry shell`
+```bash 
+poetry shell
+```
+
 Apply the migrations to set up the database.
-`python manage.py migrate`
+```bash 
+python manage.py migrate
+```
+
 Start the development server.
-`python manage.py runserver`
+```bash 
+python manage.py runserver
+```
+
 
 ## Usage
 
@@ -40,5 +62,6 @@ Issues: Management of issues related to projects, including creation, modificati
 In accordance with OWASP and GDPR specifications, this API implements:
 
 JWT Authentication for secure management of user sessions.
+
 Role-based permissions to control access to the API's various resources.
 Data protection to ensure the confidentiality and security of user information.
