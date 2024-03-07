@@ -17,46 +17,31 @@ These instructions will help you get a copy of the project up and running on you
 ## Installation
 
 Clone this repository to your local machine.
-
 ```bash
 git clone https://github.com/yourusername/softdesk-api.git
 ```
 
 Navigate to the project folder:
-
-
 ```bash 
 cd softdesk-api
 ```
 
-
 Use Poetry to install the project dependencies.
-
-
 ```
 poetry install
 ```
 
-
 Activate the virtual environment.
-
-
 ```bash 
 poetry shell
 ```
 
-
 Apply the migrations to set up the database.
-
-
 ```bash 
 python manage.py migrate
 ```
 
-
 Start the development server.
-
-
 ```bash 
 python manage.py runserver
 ```
@@ -77,5 +62,6 @@ Issues: Management of issues related to projects, including creation, modificati
 In accordance with OWASP and GDPR specifications, this API implements:
 
 JWT Authentication for secure management of user sessions.
+
 Role-based permissions to control access to the API's various resources.
 Data protection to ensure the confidentiality and security of user information.
